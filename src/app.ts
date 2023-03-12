@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import helmet from "helmet";
+import logger, { notFoundLog, errorLog } from "./lib/logger";
 
 /*=============================================
 =        All Server Backend Configs           =
@@ -28,10 +29,20 @@ const app: Express = express();
  */
 app.use(helmet());
 
+/**
+ * HTTP request logger middleware for node.js
+ * @doc : https://github.com/expressjs/morgan#readme
+ */
+app.use(logger);
+app.use(notFoundLog);
+app.use(errorLog);
+
 // Testing Route
 app.get("/", (req: Request, res: Response) => {
-  res.json({ errorCode: null, data: {}, message: "Success Testing!" });
+  res.json({ errorCode: null, data: {}, message: "Success Testing!zzz" });
 });
+
+// app.get("*", () => );
 
 // Listening on http://localhost:{serverConfig.port}
 app.listen(serverConfig.port, () => {

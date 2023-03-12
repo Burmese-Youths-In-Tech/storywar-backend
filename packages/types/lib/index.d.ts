@@ -1,2 +1,1 @@
-import TestType from "./TestType";
-export default TestType;
+export { default as TestType } from "./TestType";

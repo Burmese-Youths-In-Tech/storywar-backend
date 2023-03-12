@@ -11,10 +11,12 @@ interface IGetUserAuthInfoRequest extends Request {
   };
 }
 
-const accessLogStream = (fileName: string) =>
-  fs.createWriteStream(path.join(__dirname, "../../", "logs", `${fileName}`), {
+const accessLogStream = (fileName: string) => {
+  const dir = path.join(__dirname, "../", "../", "../", "logs", `${fileName}`);
+  return fs.createWriteStream(dir, {
     flags: "a",
   });
+};
 
 morgan.token("date", () => {
   return moment().tz("Asia/Yangon").format();
@@ -28,8 +30,10 @@ morgan.token("user", (req: IGetUserAuthInfoRequest) => {
 
 const morganFormat = `[:date[clf]] :method ":url", Status :status, ContentLength :res[content-length] - :response-time ms, :user`;
 
+const getToday = () => moment().tz("Asia/Yangon").format("YYYY-MM-DD");
+
 export default morgan(morganFormat, {
-  stream: accessLogStream("request.log"),
+  stream: accessLogStream(`requests/${getToday()}_request.log`),
   skip: function (req: Request, res: Response) {
     return res.statusCode > 400;
   },
@@ -40,7 +44,7 @@ export default morgan(morganFormat, {
  *
  */
 export const notFoundLog = morgan(morganFormat, {
-  stream: accessLogStream("404.log"),
+  stream: accessLogStream(`404/${getToday()}_404.log`),
   skip: function (req: Request, res: Response) {
     return res.statusCode !== 404;
   },
@@ -50,8 +54,8 @@ export const notFoundLog = morgan(morganFormat, {
  * Output Only Error Logs.
  */
 export const errorLog = morgan(morganFormat, {
-  stream: accessLogStream("error.log"),
-  skip: function (req: IGetUserAuthInfoRequest, res: Response) {
+  stream: accessLogStream(`errors/${getToday()}_error.log`),
+  skip: function (req: Request, res: Response) {
     return res.statusCode < 400 && res.statusCode !== 404;
   },
 });

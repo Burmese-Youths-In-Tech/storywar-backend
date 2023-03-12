@@ -7,12 +7,13 @@
     "prepare": "husky install",
     "build": "concurrently \"cd ./packages/types && yarn build \" \"cd ./src && npx tsc \"",
     "start": "node dist/app.js",
-    "dev": "concurrently \"cd ./packages/types && yarn dev \" \"cd .src && npx tsc -w && nodemon ./dist/app.js\"",
+    "dev": "concurrently \"cd ./packages/types && yarn dev \" \"cd src && npx tsc -w\" \"nodemon ./src/dist/app.js\"",
     "clean": "concurrently \"rm -rf **/node_modules\" \"rm -rf ./packages/lib\"",
     "clean:build": "rm -rf dist && rm -rf ./packages/lib ",
     "clean:node": "rm -rf **/node_modules",
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "cz",
+    "changelog": "cz changelog",
     "lint": "npx eslint './**/*.ts'",
     "lint:fix": "npx eslint . --fix",
     "init": "cp ./.env.test .env"
@@ -47,6 +48,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.36.0",
     "husky": "^8.0.3",
+    "lerna": "^6.5.1",
     "lint-staged": "^13.2.0",
     "nodemon": "^2.0.21",
     "prettier": "^2.8.4",
@@ -66,7 +68,7 @@
       "**/@types/**"
     ]
   },
-  "private": true,
   "author": "lwinmoepaing <lwinmoepaing.dev@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "private": true
 }
