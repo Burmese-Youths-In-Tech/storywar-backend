@@ -1,4 +1,4 @@
-{
+{ 
   "compilerOptions": {
     "outDir": "lib",
     "module": "esnext",
@@ -6,7 +6,7 @@
     "declaration": true,
     "moduleResolution": "node"
   },
-  "include": ["types"],
-  "exclude": ["node_modules", "lib"],
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "lib/**/*"],
   "types": ["typePatches"]
 }

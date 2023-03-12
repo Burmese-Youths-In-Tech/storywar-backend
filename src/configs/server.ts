@@ -4,6 +4,7 @@ import path from "path";
 =        Dot Evnirontment File Config         =
 =============================================*/
 import * as dotenv from "dotenv";
+
 dotenv.config({ path: path.join(__dirname, "../.env") });
 
 const serverConfig = {
@@ -12,6 +13,7 @@ const serverConfig = {
   version: "0.0.1",
   author: "Burmese Youths In Tech",
   port: process.env.PORT || 3000,
+  isMentain: false,
 };
 
 export default serverConfig;

@@ -5,17 +5,20 @@
   "main": "src/app.ts",
   "scripts": {
     "prepare": "husky install",
-    "build": "concurrently \"cd ./packages && yarn build \" \"npx tsc\"",
+    "build": "concurrently \"cd ./packages/types && yarn build \" \"cd ./src && npx tsc \"",
     "start": "node dist/app.js",
-    "dev": "concurrently \"cd ./packages && yarn dev \" \"npx tsc -w && nodemon dist/app.js\"",
-    "clean": "rm -rf dist && rm -rf ./packages/lib",
+    "dev": "concurrently \"cd ./packages/types && yarn dev \" \"cd .src && npx tsc -w && nodemon ./dist/app.js\"",
+    "clean": "concurrently \"rm -rf **/node_modules\" \"rm -rf ./packages/lib\"",
+    "clean:build": "rm -rf dist && rm -rf ./packages/lib ",
+    "clean:node": "rm -rf **/node_modules",
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "cz",
-    "eslint": "npx eslint .",
+    "lint": "npx eslint './**/*.ts'",
+    "lint:fix": "npx eslint . --fix",
     "init": "cp ./.env.test .env"
   },
   "lint-staged": {
-    "*.ts": "yarn eslint"
+    "*.ts": "npx eslint --fix"
   },
   "config": {
     "commitizen": {
@@ -33,6 +36,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
+    "@types/babel__core": "^7.20.0",
     "@types/express": "^4.17.17",
     "@types/morgan": "^1.9.4",
     "@types/node": "^18.15.0",
@@ -56,12 +60,10 @@
   ],
   "workspaces": {
     "packages": [
-      "*"
+      "packages/*"
     ],
     "nohoist": [
-      "**/@babel/preset-env",
-      "**/@babel/preset-typescript",
-      "**/@babel/preset-react"
+      "**/@types/**"
     ]
   },
   "private": true,

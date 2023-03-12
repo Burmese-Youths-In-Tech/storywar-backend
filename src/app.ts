@@ -15,6 +15,7 @@ import serverConfig from "./configs/server";
  *
  */
 import * as dotenv from "dotenv";
+
 dotenv.config();
 
 const app: Express = express();
