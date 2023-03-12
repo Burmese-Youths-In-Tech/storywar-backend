@@ -1,10 +1,10 @@
-import express, { Express } from "express";
+import express, { Express, Request, Response } from "express";
 import helmet from "helmet";
 
 /*=============================================
 =        All Server Backend Configs           =
 =============================================*/
-// import serverConfig from "./src/configs/server";
+import serverConfig from "./configs/server";
 
 /*=============================================
 =        Dot Evnirontment File Config         =
@@ -26,3 +26,13 @@ const app: Express = express();
  *
  */
 app.use(helmet());
+
+// Testing Route
+app.get("/", (req: Request, res: Response) => {
+  res.json({ errorCode: null, data: {}, message: "Success Testing!" });
+});
+
+// Listening on http://localhost:{serverConfig.port}
+app.listen(serverConfig.port, () => {
+  console.log(`Now Listening on Port ${serverConfig.port}`);
+});
