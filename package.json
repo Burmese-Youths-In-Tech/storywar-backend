@@ -5,9 +5,9 @@
   "main": "src/app.ts",
   "scripts": {
     "prepare": "husky install",
-    "build": "concurrently \"cd ./packages/types && yarn build \" \"cd ./src && npx tsc \"",
-    "start": "node dist/app.js",
-    "dev": "concurrently \"cd ./packages/types && yarn dev \" \"cd src && npx tsc -w\" \"nodemon ./src/dist/app.js\"",
+    "start": "node ./dist/app.js",
+    "build": "concurrently \"cd ./packages/types && yarn build \" \"cd src && npx tsc \"",
+    "dev": "concurrently \"cd ./packages/types && yarn dev \" \"cd src && npx tsc -w\" \"nodemon ./dist/app.js\"",
     "clean": "concurrently \"rm -rf **/node_modules\" \"rm -rf ./packages/lib\"",
     "clean:build": "rm -rf dist && rm -rf ./packages/lib ",
     "clean:node": "rm -rf **/node_modules",

@@ -12,7 +12,7 @@ interface IGetUserAuthInfoRequest extends Request {
 }
 
 const accessLogStream = (fileName: string) => {
-  const dir = path.join(__dirname, "../", "../", "../", "logs", `${fileName}`);
+  const dir = path.join(__dirname, "../", "../", "logs", `${fileName}`);
   return fs.createWriteStream(dir, {
     flags: "a",
   });
