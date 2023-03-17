@@ -9,14 +9,16 @@
     "build": "concurrently \"cd ./packages/types && yarn build \" \"cd src && npx tsc \"",
     "dev": "concurrently \"cd ./packages/types && yarn dev \" \"cd src && npx tsc -w\" \"nodemon ./dist/app.js\"",
     "clean": "concurrently \"rm -rf **/node_modules\" \"rm -rf ./packages/lib\"",
-    "clean:build": "rm -rf dist && rm -rf ./packages/lib ",
+    "clean:build": "concurrently \"rm -rf dist\" \"rm -rf ./packages/types/lib\" ",
     "clean:node": "rm -rf **/node_modules",
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "cz",
     "changelog": "cz changelog",
     "lint": "npx eslint './**/*.ts'",
     "lint:fix": "npx eslint . --fix",
-    "init": "cp ./.env.test .env"
+    "init": "cp ./.env.test .env",
+    "db:gen": "npx prisma generate",
+    "db:migrate": "npx prisma migrate"
   },
   "lint-staged": {
     "*.ts": "npx eslint --fix"

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "sourceMap": true,
     /* Language and Environment */
     "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     /* Modules */
@@ -14,7 +15,11 @@
     "strict": true /* Enable all strict type-checking options. */,
 
     /* Completeness */
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true, /* Skip type checking all .d.ts files. */
+    "lib": ["esnext"],
+
   },
   "include": ["./**/*.ts"]
 }
+
+
