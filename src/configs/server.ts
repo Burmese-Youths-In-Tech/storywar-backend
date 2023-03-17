@@ -16,7 +16,7 @@ const serverConfig = {
   version: "0.0.1",
   author: "Burmese Youths In Tech",
   port: process.env.PORT || 3000,
-  isMentain: false,
+  isMaintenance: false,
 };
 
 export default serverConfig;

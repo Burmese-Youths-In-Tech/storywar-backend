@@ -1,0 +1,140 @@
+// ----------------------------------------------------------------
+// Prisma Schama
+// ----------------------------------------------------------------
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+//
+//
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ----------------------------------------------------------------
+// Database Resources
+// ----------------------------------------------------------------
+// 
+// Shadow Database is needed for Productions.
+// If Development Migration , We'll have to set Comment for DATABASE_SHADOW_URL
+// You can see all variables in .env file
+// 
+//
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("DATABASE_SHADOW_URL")
+}
+
+// ----------------------------------------------------------------
+// User Table
+// ----------------------------------------------------------------
+// 
+//
+enum UserRole {
+  ADMIN
+  VOLUNTEER
+  USER
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String?
+  profilePic  String
+  // Role must be "USER" or "ADMIN"
+  role        UserRole @default(USER)
+  password    String
+  tokens      String[] @default([])
+  fcmTokens   String[] @default([])
+  isBanedUser Boolean  @default(false)
+  // Relationship for votes
+  votes       Votes[]  @relation("VoteUsers")
+  parts       Part[]
+  // TimeStamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Indexing
+  @@index([email])
+}
+
+// ----------------------------------------------------------------
+// Parent Story Table
+// ----------------------------------------------------------------
+// 
+//
+model ParentStory {
+  id          Int    @id @default(autoincrement())
+  title       String
+  currentPart Int
+  nextPart    Int
+  status      String
+  // ParentStory Have Many Parts
+  parts       Part[]
+}
+
+// ----------------------------------------------------------------
+// Part of Parent Story Table
+// ----------------------------------------------------------------
+// 
+//
+model Part {
+  id             Int         @id @default(autoincrement())
+  // Part must have parentID
+  ParentStory    ParentStory @relation(fields: [parentStoryId], references: [id])
+  parentStoryId  Int
+  partNo         Int
+  content        String
+  user           User        @relation(fields: [userId], references: [id])
+  userId         Int
+  totalVoteCount Int
+  // Part Have Many Votes
+  votes          Votes[]
+
+  @@index([partNo, parentStoryId])
+}
+
+// ----------------------------------------------------------------
+// Voting Table for Each Part
+// ----------------------------------------------------------------
+// 
+//
+model Votes {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation("VoteUsers", fields: [userId], references: [id])
+  userId    Int
+  part      Part     @relation(fields: [partId], references: [id])
+  partId    Int
+  name      String
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+}
+
+// ----------------------------------------------------------------
+// Migration for new fields or adding new columns
+// ----------------------------------------------------------------
+// 
+// Step 1,
+// Change to local Database Url for Development
+// Inside `.env` file and you'll need to change variables
+// DATABASE_URL = "local database url" and DATABASE_SHADOW_URL = ""
+// 
+// @example 
+// DATABASE_URL=postgres://lwinmoepaing@localhost:5432/lwinmoepaing
+// # DATABASE_SHADOW_URL = 
+// 
+// Step 2,
+// After that, you can use prisma-cli 
+// ```npx prisma migrate dev --name add_field_name```
+// And we'll see prisma create new migration data for new changes
+// 
+// (Another Solution for Step2)
+// If it's not okay with that we'll use below scenario.
+// npx prisma migrate diff --from-url <production-url> --to-schema-datamodel ./prisma/schema.prisma --script > modified.sql
+// We'll get the new migration.sql file and We'll manually create migration folder and sql 
+//
+// Step 3,
+// Applying new changes to production database
+// Applying Already Applided Steps
+// ```npx prisma migrate resolve --applied 20230316182759_initial```
+// ```npx prisma migrate deploy```
+//
+// ----------------------------------------------------------------

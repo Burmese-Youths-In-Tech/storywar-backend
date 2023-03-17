@@ -4,6 +4,7 @@
     "tabnine.tabnine-vscode",
     "dbaeumer.vscode-eslint",
     "ms-vscode.vscode-typescript-next",
-    "pkief.material-icon-theme" 
+    "pkief.material-icon-theme",
+    "Prisma.prisma"
   ]
 }
