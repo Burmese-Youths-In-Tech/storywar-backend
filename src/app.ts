@@ -23,6 +23,7 @@ import serverConfig from "./configs/server";
 import * as dotenv from "dotenv";
 import setRootRouter from "./routes/RouteIndex";
 import path from "path";
+import { rareErrorResponse } from "./utils/responseHandler";
 
 dotenv.config({ path: path.join("../", ".env") });
 
@@ -39,14 +40,6 @@ prisma
      *
      */
     app.use(helmet());
-
-    /**
-     * HTTP request logger middleware for node.js
-     * @doc : https://github.com/expressjs/morgan#readme
-     */
-    app.use(logger);
-    app.use(notFoundLog);
-    app.use(errorLog);
 
     /**
      * First Server Configuration Data
@@ -68,13 +61,28 @@ prisma
      */
     setRootRouter(app);
 
-    app.use("*", (req: Request, res: Response) => {
+    app.use("*", (_req: Request, res: Response) => {
       res.status(404).json({
         errorCode: 0,
         message: "Request Not Found 404",
         statusCode: 404,
       });
     });
+
+    /**
+     * Final Manage Error Exception
+     * @desc : Finally Response Message
+     * @return { JSON }
+     */
+    app.use(rareErrorResponse);
+
+    /**
+     * HTTP request logger middleware for node.js
+     * @doc : https://github.com/expressjs/morgan#readme
+     */
+    app.use(logger);
+    app.use(notFoundLog);
+    app.use(errorLog);
 
     // Listening on http://localhost:{serverConfig.port}
     app.listen(serverConfig.port, () => {
