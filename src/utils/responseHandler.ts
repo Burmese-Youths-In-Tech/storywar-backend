@@ -1,4 +1,4 @@
-import { HttpCode, ResponseType } from "@byit/storywar";
+import { HttpCode, ResponseType, ResponseErrorType } from "@byit/storywar";
 import { Prisma } from "@prisma/client";
 import { Request, Response } from "express";
 
@@ -8,23 +8,24 @@ export function successResponse<T>(
   statusCode: number = HttpCode.OK
 ): ResponseType<T> {
   return {
-    isSuccess: true,
     errorCode: 0,
     message: message ? message : "",
     data,
     statusCode,
+    errors: [],
   };
 }
 
 export function errorResponse<T>(
   data: T,
   message?: string,
-  statusCode: number = HttpCode.NOT_FOUND
+  statusCode: number = HttpCode.NOT_FOUND,
+  errors?: ResponseErrorType[]
 ): ResponseType<T> {
   return {
-    isSuccess: false,
     errorCode: 1,
     data,
+    errors: errors || [],
     message: message ? message : "",
     statusCode,
   };

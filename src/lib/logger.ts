@@ -4,12 +4,12 @@ import path from "path";
 import fs from "fs";
 import moment from "moment-timezone";
 
-interface IGetUserAuthInfoRequest extends Request {
-  user: {
-    id: string;
-    name: string;
-  };
-}
+// interface IGetUserAuthInfoRequest extends Request {
+//   user: {
+//     id: string;
+//     name: string;
+//   };
+// }
 
 const accessLogStream = (fileName: string) => {
   const dir = path.join(__dirname, "../", "../", "logs", `${fileName}`);
@@ -22,7 +22,7 @@ morgan.token("date", () => {
   return moment().tz("Asia/Yangon").format();
 });
 
-morgan.token("user", (req: IGetUserAuthInfoRequest) => {
+morgan.token("user", (req: any) => {
   return req?.user
     ? `UserId:${req.user.id} Name:"${req.user.name}"`
     : '"Guest"';
@@ -56,6 +56,6 @@ export const notFoundLog = morgan(morganFormat, {
 export const errorLog = morgan(morganFormat, {
   stream: accessLogStream(`errors/${getToday()}_error.log`),
   skip: function (req: Request, res: Response) {
-    return res.statusCode < 400 && res.statusCode !== 404;
+    return res.statusCode === 404 || res.statusCode < 400;
   },
 });

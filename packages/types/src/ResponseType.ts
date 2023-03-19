@@ -1,9 +1,15 @@
+export interface ResponseErrorType {
+  location: string;
+  msg: string;
+  param: string;
+}
+
 interface ResponseType<T> {
-  isSuccess: boolean;
   errorCode: number;
   message: string;
   data: T;
   statusCode: number;
+  errors: ResponseErrorType[];
 }
 
 export default ResponseType;

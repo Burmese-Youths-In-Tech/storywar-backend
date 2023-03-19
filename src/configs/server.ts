@@ -13,10 +13,9 @@ const serverConfig = {
   title: process.env.APP_NAME || "Burmese Youths In Tech App",
   apiVersion: `/api/${MAJOR_VERSION}`,
   majorVersion: MAJOR_VERSION,
-  version: "0.0.1",
+  version: process.env.VERSION || "0.0.1",
   author: "Burmese Youths In Tech",
-  port: process.env.PORT || 3000,
   isMaintenance: false,
 };
 
-export default serverConfig;
+export default Object.freeze(serverConfig);

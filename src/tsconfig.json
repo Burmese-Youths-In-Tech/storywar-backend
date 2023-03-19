@@ -19,7 +19,7 @@
     "lib": ["esnext"],
 
   },
-  "include": ["./**/*.ts"]
+  "include": ["./**/*.ts", "./public/**/*.html"]
 }
 
 
